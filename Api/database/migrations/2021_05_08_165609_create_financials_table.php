@@ -1,0 +1,41 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateFinancialsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('financials', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->boolean('id_type')->nullable()->comment('1=Passport, 2=Driving, 3=Voter');
+            $table->string('id_code', 50)->nullable();
+            $table->string('bank_name', 50)->nullable();
+            $table->string('bank_branch_name', 50)->nullable();
+            $table->string('bank_account_name', 50)->nullable();
+            $table->string('bank_account_number', 50)->nullable();
+            $table->string('bank_routing_number', 50)->nullable();
+            $table->string('tin_number', 50)->nullable();
+
+            $table->foreign('user_id')->references('id')->on('users');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('financials');
+    }
+}

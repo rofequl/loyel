@@ -1,0 +1,130 @@
+// Here you can add other styles
+
+.c-app {
+  color: #3c4b64;
+  background-color: #f2f3f8;
+  --color: #3c4b64;
+}
+
+body {
+  font-family: sans-serif !important;
+  font-size: 14px;
+}
+
+a {
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+label, p{
+  margin-bottom: 0!important;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #ded1d1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #b1aaaa;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #9b9494;
+}
+
+.dataTables_wrapper {
+  background: #fff;
+  border-radius: .375rem .375rem .375rem .375rem;
+  box-shadow: 0 2px 0 rgba(90, 97, 105, 0.11), 0 4px 8px rgba(90, 97, 105, 0.12), 0 10px 10px rgba(90, 97, 105, 0.06), 0 7px 70px rgba(90, 97, 105, 0.1);
+}
+
+.dataTables_filter, .dataTables_info, .dataTables_length, .dataTables_paginate {
+  width: 50%;
+  float: left;
+  font-size: 13px;
+  padding: 15px 20px;
+  color: #818ea3;
+}
+
+.dataTables_filter {
+  width: 50%;
+  float: left;
+  font-size: 13px;
+  padding: 15px 20px;
+  color: #818ea3;
+}
+
+.dataTables_info, .dataTables_length, .dataTables_paginate {
+  width: 50%;
+  float: left;
+  font-size: 13px;
+  padding: 15px 20px;
+  color: #818ea3;
+}
+
+//Vue data table css code
+.VueTables__search-field {
+  margin: 10px 0 0 10px;
+
+  label {
+    display: none;
+  }
+}
+
+.VueTables__limit-field {
+  margin: 10px 10px 0 0;
+
+  label {
+    display: none;
+  }
+}
+
+//Property menu select style
+.custom-select:focus {
+  outline: 0;
+  border: 0;
+  box-shadow: 0 0 0 0;
+}
+
+.cat-select-design {
+  border: 1px solid #9199a7 !important;
+  font-size: 13px;
+}
+
+.dataTables_wrapper table.VueTables__table {
+  thead {
+    tr:last-child th {
+      padding-right: 1.7rem;
+    }
+
+    th {
+      &.sorting, &.sorting_asc, &.sorting_desc {
+        position: relative;
+      }
+
+      &:first-child {
+        border-left: none;
+      }
+
+      text-align: center;
+      background-color: #fbfbfb;
+      border: 1px solid #e1e5eb;
+      font-weight: 400;
+      padding: 0.75rem 1.0625rem;
+    }
+  }
+
+  td:focus, th:focus {
+    outline: 0 !important;
+  }
+}

@@ -1,0 +1,128 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap-vue/src/index.scss';
+// If you want to override variables do it here
+@import "variables";
+
+// If you want to add something do it here
+@import "custom";
+
+label, p {
+  margin-bottom: 0 !important;
+}
+
+//Header Droupdown
+.header-droupdown {
+  z-index: 99999 !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.header-droupdown .ant-dropdown-menu-item:hover {
+  background-color: #ffffff !important;
+}
+
+.card-columns {
+  @include media-breakpoint-only(xl) {
+    column-count: 5;
+  }
+  @include media-breakpoint-only(lg) {
+    column-count: 4;
+  }
+  @include media-breakpoint-only(md) {
+    column-count: 3;
+  }
+  @include media-breakpoint-only(sm) {
+    column-count: 2;
+  }
+}
+
+.dataTables_wrapper {
+  background: #fff;
+  border-radius: .375rem .375rem .375rem .375rem;
+  box-shadow: 0 2px 0 rgba(90, 97, 105, 0.11), 0 4px 8px rgba(90, 97, 105, 0.12), 0 10px 10px rgba(90, 97, 105, 0.06), 0 7px 70px rgba(90, 97, 105, 0.1);
+}
+
+.dataTables_filter, .dataTables_info, .dataTables_length, .dataTables_paginate {
+  width: 50%;
+  float: left;
+  font-size: 13px;
+  padding: 15px 20px;
+  color: #818ea3;
+}
+
+.dataTables_filter {
+  width: 50%;
+  float: left;
+  font-size: 13px;
+  padding: 15px 20px;
+  color: #818ea3;
+}
+
+.dataTables_info, .dataTables_length, .dataTables_paginate {
+  width: 50%;
+  float: left;
+  font-size: 13px;
+  padding: 15px 20px;
+  color: #818ea3;
+}
+
+//Vue data table css code
+.VueTables__search-field {
+  margin: 10px 0 0 10px;
+
+  label {
+    display: none;
+  }
+}
+
+.VueTables__limit-field {
+  margin: 10px 10px 0 0;
+
+  label {
+    display: none;
+  }
+}
+
+//Property menu select style
+.custom-select:focus {
+  outline: 0;
+  border: 0;
+  box-shadow: 0 0 0 0;
+}
+
+.cat-select-design {
+  border: 1px solid #9199a7 !important;
+  font-size: 13px;
+}
+
+.dataTables_wrapper table.VueTables__table {
+  thead {
+    tr:last-child th {
+      padding-right: 1.7rem;
+    }
+
+    th {
+      &.sorting, &.sorting_asc, &.sorting_desc {
+        position: relative;
+      }
+
+      &:first-child {
+        border-left: none;
+      }
+
+      text-align: center;
+      background-color: #fbfbfb;
+      border: 1px solid #e1e5eb;
+      font-weight: 400;
+      padding: 0.75rem 1.0625rem;
+    }
+  }
+
+  td:focus, th:focus {
+    outline: 0 !important;
+  }
+}
