@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <Slider/>
     <Deal/>
     <!-- FEATURED SELLER AREA START -->

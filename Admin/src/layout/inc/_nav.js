@@ -84,7 +84,7 @@ export default [
                     },
                     {
                         name: 'Seller Commission',
-                        to: '/customer/customer-list'
+                        to: '/seller/seller-commission'
                     },
                 ]
             },
@@ -104,11 +104,11 @@ export default [
                     },
                     {
                         name: 'Newsletters',
-                        to: '/marketing/flash-deals'
+                        to: '/marketing/newsletters'
                     },
                     {
                         name: 'Bulk SMS',
-                        to: '/marketing/flash-deals'
+                        to: '/marketing/bulk-sms'
                     },
                     {
                         name: 'Subscribers',
@@ -117,26 +117,6 @@ export default [
                     {
                         name: 'Coupon',
                         to: '/marketing/flash-deals'
-                    },
-                ]
-            },
-            {
-                _name: 'CSidebarNavDropdown',
-                name: 'Reports',
-                route: '/shipping',
-                icon: 'cil-clipboard',
-                items: [
-                    {
-                        name: 'In House Product Sale',
-                        to: '/shipping/configuration'
-                    },
-                    {
-                        name: 'Seller Product Sale',
-                        to: '/shipping/region'
-                    },
-                    {
-                        name: 'Product Stock',
-                        to: '/shipping/city'
                     },
                 ]
             },

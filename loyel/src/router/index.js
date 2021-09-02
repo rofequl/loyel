@@ -103,7 +103,13 @@ function configRoutes() {
                     path: "/notification",
                     name: "Notification",
                     component: () => import("@/pages/Notification"),
-                }
+                },
+                {
+                    meta: {title: 'All Categories List'},
+                    path: "/categories",
+                    name: "All Categories",
+                    component: () => import("@/pages/Category"),
+                },
 
             ]
         },

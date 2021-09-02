@@ -160,7 +160,7 @@ export const iconsSet = Object.assign(
         cilThumbDown,
         cilCreditCard,
         cilMobile,
-        cilHeart
+        cilHeart,
     },
     {
         cifUs,

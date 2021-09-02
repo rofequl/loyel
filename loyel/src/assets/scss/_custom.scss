@@ -38,6 +38,7 @@ Typography
 
 body {
   position: relative;
+  background-color: #f2f3f8!important;
 }
 
 body.dark .section {
@@ -1361,59 +1362,83 @@ body {
   color: #e6420b;
 }
 
-.main-menubar .search-box {
-  z-index: 999;
-  padding: 20px 0;
-  width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+.search-box input {
+  padding: 17px 20px;
+  border: 1px solid #7470eb;
 }
 
-.main-menubar .search-box form {
-  width: 100%;
-  text-align: center;
+.search-box input:focus {
+  box-shadow: none;
+  border-color: #7470eb!important;
 }
 
-.main-menubar .search-box form input,
-{
-  width: 74%;
-  padding: 15px 0;
-  border-radius: 25px;
-  text-align: center;
-  background: #d00000;
-  color: #fff;
-  font-weight: 600;
-  border: 0;
-  outline: 0;
-}
-
-.typed-search-box{
-  width: 42.5%!important;
-  top: 77px;
-}
-
-.main-menubar .search-box form input:active {
-  border: 0;
-  outline: 0;
-}
-
-.main-menubar .search-box form button {
-  border: 0;
-  background: green;
-  position: relative;
-}
-
-.main-menubar .search-box form button i {
+.search-box button {
   position: absolute;
-  top: -20px;
-  right: 25px;
-  font-size: 30px;
-  color: #fff;
+  top: 0;
+  right: 15px;
+  border-radius: 0 5px 5px 0;
+  padding: 5px 10px 9px;
+  background-color: transparent;
+  color: #7470eb!important;
+  font-size: 17px;
 }
+
+.ant-dropdown-link .fa{
+  font-size: 25px;
+}
+
+//.main-menubar .search-box {
+//  z-index: 999;
+//  padding: 20px 0;
+//  width: 100%;
+//  display: -webkit-box;
+//  display: -ms-flexbox;
+//  display: flex;
+//  -webkit-box-pack: center;
+//  -ms-flex-pack: center;
+//  justify-content: center;
+//}
+//
+//.main-menubar .search-box form {
+//  width: 100%;
+//  text-align: center;
+//}
+//
+//.main-menubar .search-box form input,
+//{
+//  width: 74%;
+//  padding: 15px 0;
+//  border-radius: 25px;
+//  text-align: center;
+//  color: #fff;
+//  font-weight: 600;
+//  border: 0.1em solid #d00000;
+//  outline: 0;
+//}
+//
+//.typed-search-box{
+//  width: 42.5%!important;
+//  top: 77px;
+//}
+//
+//.main-menubar .search-box form input:active {
+//  border: 0;
+//  outline: 0;
+//}
+//
+//.main-menubar .search-box form button {
+//  border: 0;
+//  background: green;
+//  position: relative;
+//}
+//
+//.main-menubar .search-box form button i {
+//  position: absolute;
+//  top: -20px;
+//  right: 25px;
+//  font-size: 30px;
+//  color: #fff;
+//}
 
 .main-menubar .navbar .right-nav .nav-item .nav-link {
   display: block;
@@ -2414,10 +2439,6 @@ a.footer-item:hover {
 
 /************************ only use laptop deveice css start ******************************/
 @media (min-width: 1100px) and (max-width: 1200px) {
-  .main-menubar .search-box form input {
-    width: 58%;
-  }
-
   .typed-search-box{
     width: 42.5%!important;
   }
@@ -2444,22 +2465,8 @@ a.footer-item:hover {
 /************************ only use laptop deveice css end ********************************/
 
 @media(max-width: 4000px) {
-  .main-menubar .search-box form input {
-    width: 50%;
-  }
-
   .typed-search-box{
     width: 35.5%!important;
-  }
-}
-
-@media(max-width: 1500px) {
-  .main-menubar .search-box form input {
-    width: 68%;
-  }
-
-  .typed-search-box{
-    width: 42%!important;
   }
 }
 

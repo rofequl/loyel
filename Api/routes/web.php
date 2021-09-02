@@ -185,11 +185,16 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
     $router->get('quotation', 'QuotationController@index');
     $router->delete('quotation/{id}', 'QuotationController@destroy');
 
+    $router->get('newsletter-email', 'NewsletterController@newsletterIndex');
+    $router->get('newsletter-mobile', 'NewsletterController@bulkSMSIndex');
+    $router->post('newsletter-send', 'NewsletterController@newsletterSend');
+    $router->post('send-bulk-sms', 'NewsletterController@bulkSMSSend');
     $router->get('subscriber', 'NewsletterController@index');
     $router->delete('subscriber/{id}', 'NewsletterController@destroy');
 
     //Customer
     $router->get('customer-list', 'Auth\CustomerController@customerList');
+    $router->delete('customer/{id}', 'Auth\CustomerController@destroy');
     $router->get('customer-details/{code}', 'Auth\CustomerController@customerDetails');
 
     $router->post('user-block', 'Auth\AdminController@userBlock');

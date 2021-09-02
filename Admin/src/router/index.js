@@ -104,6 +104,12 @@ function configRoutes() {
                     name: "seller-profile",
                     component: () => import("@/pages/seller/SellerProfile")
                 },
+                {
+                    meta: {title: 'Seller Commission'},
+                    path: "/seller/seller-commission",
+                    name: "seller-commission",
+                    component: () => import("@/pages/seller/Commission")
+                },
                 // Marketing
                 {
                     meta: {title: 'Flash Deals'},
@@ -134,6 +140,18 @@ function configRoutes() {
                     path: "/marketing/subscribers-list",
                     name: "subscribers-list",
                     component: () => import("@/pages/marketing/Subscribers")
+                },
+                {
+                    meta: {title: 'Newsletter'},
+                    path: "/marketing/newsletters",
+                    name: "newsletters",
+                    component: () => import("@/pages/marketing/Newsletter")
+                },
+                {
+                    meta: {title: 'Bulk SMS'},
+                    path: "/marketing/bulk-sms",
+                    name: "bulk-sms",
+                    component: () => import("@/pages/marketing/BulkSMS")
                 },
                 // Setup & Configurations
                 {

@@ -60,6 +60,10 @@ export default {
         CUSTOMER_ADD: (state, data) => {
             state.customer.unshift(data);
         },
+        CUSTOMER_REMOVE: (state, data) => {
+            let index = state.customer.findIndex(value => value.customer_id === data);
+            state.customer.splice(index, 1);
+        },
         CUSTOMER_MODIFY: (state, data) => {
             Object.assign(state.customer.find(element => element.id === data.id), data);
         },

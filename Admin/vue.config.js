@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: 'https://cdn.jsdelivr.net/gh/rofequl/cdn/loyel/admin/',
+  //publicPath: 'https://cdn.jsdelivr.net/gh/rofequl/cdn/loyel/admin/',
   lintOnSave: false,
   runtimeCompiler: true,
   configureWebpack: {

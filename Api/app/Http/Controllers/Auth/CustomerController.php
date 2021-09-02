@@ -367,7 +367,7 @@ class CustomerController extends Controller
         $phone = $regMedium == 'email' ? null : $request->emailOrMobile;
         try {
             $verification_code = CommonHelper::generateOTP(6);
-            if ($email) {
+            if ($email && env('MAIL_USERNAME') != null) {
                 $check = User::where('email', $email)->first();
                 if ($check) {
                     return $this->errorResponse('This email already used try another');
@@ -377,7 +377,7 @@ class CustomerController extends Controller
                 $general = DB::table('generals')->get()->first();
                 Mail::send('email.verify', ['name' => $name, 'verification_code' => $verification_code, 'general' => $general],
                     function ($mail) use ($email, $subject, $general) {
-                        $mail->from("finecourier@gmail.com", $general->app_name);
+                        $mail->from(env('MAIL_USERNAME'), $general->app_name);
                         $mail->to($email)->subject($subject);
                     });
                 $this->saveVerify($email, $verification_code);
@@ -470,7 +470,8 @@ class CustomerController extends Controller
 
     public function customerList()
     {
-        return DB::table('users')->whereIn('user_type', [0, 3])->select('id', 'name', 'photo_type', 'photo', 'status', 'customer_id')->get();
+        return DB::table('users')->whereIn('user_type', [0, 3])->select('id', 'name', 'photo_type', 'photo', 'status', 'customer_id',
+            'email', 'mobile')->get();
     }
 
     public function customerDetails($code)
@@ -562,5 +563,34 @@ class CustomerController extends Controller
         }
 
         return $result;
+    }
+
+    public function destroy($id)
+    {
+        $user = DB::table('users')->where('customer_id', $id)->first();
+        $order = DB::table('orders')->where('user_id', $user->id)->first();
+        if ($order) return $this->successResponse('You can\'t delete this account.', 'Error');
+
+        if ($user->user_type === 3) {
+            DB::table('users')
+                ->where('id', $user->id)
+                ->update([
+                    'user_type' => 2,
+                ]);
+            DB::table('addresses')->where('user_id', $user->id)->delete();
+            return $this->successResponse('Remove from customer but the seller account not remove');
+        } else if ($user->user_type === 0) {
+            DB::table('users')->where('id', $user->id)->delete();
+            DB::table('addresses')->where('user_id', $user->id)->delete();
+            DB::table('financials')->where('user_id', $user->id)->delete();
+            if ($user->photo !== 'image/user/user.png') File::delete(base_path('public/' . $user->photo));
+            $product = DB::table('products')->whereJsonContains('wishlist', $user->id)->get();
+            foreach ($product as $products) {
+                $wishlist = $products->wishlist === null ? [] : $products->wishlist;
+                $key = array_search($user->id, $wishlist);
+                unset($wishlist[$key]);
+                DB::table('products')->where('id', $products->id)->update(['wishlist' => json_encode($wishlist)]);
+            }
+        }
     }
 }

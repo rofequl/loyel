@@ -8,6 +8,12 @@ import {ClientTable} from 'vue-tables-2';
 import Vue2Editor from "vue2-editor";
 import VueSocialSharing from 'vue-social-sharing'
 
+/*============================================
+// npm install --save vue-scrollto
+============================================= */
+const VueScrollTo = require('vue-scrollto')
+Vue.use(VueScrollTo,{duration: 2500})
+
 window.Form = Form;
 Vue.prototype.moment = moment
 Vue.use(Antd);

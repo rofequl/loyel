@@ -37,7 +37,7 @@
                           title="Are you sure delete this seller?"
                           ok-text="Yes"
                           cancel-text="No"
-                          @confirm="confirm(props.row.id)">
+                          @confirm="confirm(props.row.customer_id)">
               <a-button icon="delete"/>
             </a-popconfirm>
           </a-button-group>
@@ -54,6 +54,7 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import CustomerAdd from "@/components/customer/CustomerAdd";
+import ApiService from "@/core/services/api.service";
 
 export default {
   name: "Customer",
@@ -72,11 +73,38 @@ export default {
       else
         CUSTOMER_BLOCK({active: 1, id: id})
     },
+    confirm(id) {
+      ApiService.delete('customer/' + id)
+          .then((data) => {
+            if (data.data.data === 'Error') {
+              this.$notification['error']({
+                message: 'Warning',
+                description: data.data.message,
+                style: {marginTop: '41px'},
+              });
+            } else {
+              this.$store.commit('CUSTOMER_REMOVE', id);
+              this.$notification['success']({
+                message: 'Congratulations',
+                description: data.data.message,
+                style: {marginTop: '41px'},
+              });
+            }
+          })
+          .catch((err) => {
+            this.$notification['error']({
+              message: 'Warning',
+              description: ((err.response || {}).data || {}).message || 'Something Wrong',
+              style: {marginTop: '41px'},
+              duration: 4
+            })
+          })
+    },
   },
   computed: {
     ...mapGetters(["customerList", "customerListIndex"]),
     columns() {
-      return ['serial', 'photo', 'name', 'status', 'action']
+      return ['serial', 'photo', 'name', 'mobile', 'status', 'action']
     },
     options() {
       return {
@@ -87,7 +115,7 @@ export default {
           status: 'Block',
         },
         sortable: ['name'],
-        filterable: ['name']
+        filterable: ['name', 'mobile']
       }
     }
   }

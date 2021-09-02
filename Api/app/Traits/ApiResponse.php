@@ -14,7 +14,7 @@ trait ApiResponse
         return $this->apiResponse([
             'success' => false,
             'message' => $message,
-            'errors' => $message,
+            'errors' => $errors,
             'code' => $code
         ], $code);
     }
