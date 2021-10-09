@@ -16,9 +16,9 @@
                          :zoom-src="thumb"
                          width="100%"
                          height="320px"
-                         zoom-width="500"
+                         zoom-width="600"
                          class="w-100 border"
-                         zoom-height="320"></image-magnifier>
+                         zoom-height="500"></image-magnifier>
       </a-col>
     </a-row>
   </div>

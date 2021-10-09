@@ -5,11 +5,13 @@ import router from "../../router";
 const auth = {
     state: {
         user: {},
+        permission: [],
         isLoad: false,
         isAuthenticated: !!JwtService.getToken(),
     },
     getters: {
         isAuthenticated: state => state.isAuthenticated,
+        isHasPermission: state => data => state.permission.indexOf(data) !== -1,
         currentUser: state => state.user,
         isLoadProfile: state => state.isLoad,
     },
@@ -40,6 +42,7 @@ const auth = {
                     ApiService.get("admin/profile")
                         .then(({data}) => {
                             commit('SET_AUTH_USERS', data.user);
+                            commit('SET_USER_PERMISSION', data.permission);
                             commit('SET_NOTIFICATION_LIST', data.notification);
                             resolve();
                         })
@@ -52,11 +55,26 @@ const auth = {
                 }
             });
         },
+        UPDATE_PERMISSION({commit}) {
+            return new Promise((resolve, reject) => {
+                ApiService.get("admin/update-permission")
+                    .then(({data}) => {
+                        commit('SET_USER_PERMISSION', data);
+                        resolve();
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            });
+        },
     },
     mutations: {
         SET_AUTH: (state, user) => {
             state.isAuthenticated = true;
             JwtService.saveToken(user.token);
+        },
+        SET_USER_PERMISSION: (state, user) => {
+            state.permission = user;
         },
         PURGE_AUTH: (state) => {
             state.isAuthenticated = false;

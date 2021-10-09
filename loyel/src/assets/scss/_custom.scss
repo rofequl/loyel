@@ -1365,6 +1365,7 @@ body {
 .search-box input {
   padding: 17px 20px;
   border: 1px solid #7470eb;
+  border-radius: 15px 15px 15px 15px;
 }
 
 .search-box input:focus {
@@ -1376,11 +1377,12 @@ body {
   position: absolute;
   top: 0;
   right: 15px;
-  border-radius: 0 5px 5px 0;
-  padding: 5px 10px 9px;
-  background-color: transparent;
-  color: #7470eb!important;
+  border-radius: 0 15px 15px 0;
+  padding: 5px 10px 8px;
+  color: white!important;
+  font-weight: 500;
   font-size: 17px;
+  background-color: #7470eb!important;
 }
 
 .ant-dropdown-link .fa{
@@ -1947,10 +1949,6 @@ a.footer-item:hover {
 }
 
 .login .box-1 {
-  height: 300px;
-}
-
-.login .box-1 {
   color: #fff;
 }
 
@@ -2321,6 +2319,10 @@ a.footer-item:hover {
   #categorie .categorie-menu ul li a {
     font-size: 13px;
   }
+
+  .all-category-menu ul li{
+   width: 33.33%!important;
+  }
 }
 
 /************************ extra small deveice css end ********************************/
@@ -2350,6 +2352,10 @@ a.footer-item:hover {
   .promo-box .shock {
     font-size: 18px !important;
   }
+
+  .all-category-menu ul li{
+    width: 25%!important;
+  }
   /*    ***** menubar end ****************/
 }
 
@@ -2377,6 +2383,9 @@ a.footer-item:hover {
     font-size: 18px !important;
   }
 
+  .all-category-menu ul li{
+    width: 20%!important;
+  }
   /*    ***** menubar end ****************/
 }
 
@@ -2440,7 +2449,7 @@ a.footer-item:hover {
 /************************ only use laptop deveice css start ******************************/
 @media (min-width: 1100px) and (max-width: 1200px) {
   .typed-search-box{
-    width: 42.5%!important;
+    width: 80%!important;
   }
 
   .main-menubar .navbar .search-input {
@@ -2466,7 +2475,7 @@ a.footer-item:hover {
 
 @media(max-width: 4000px) {
   .typed-search-box{
-    width: 35.5%!important;
+    width: 90%!important;
   }
 }
 

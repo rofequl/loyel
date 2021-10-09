@@ -1,3 +1,5 @@
+import store from '@/store'
+
 export default [
     {
         _name: 'CSidebarNav',
@@ -14,34 +16,34 @@ export default [
                 route: '/product',
                 icon: 'cil-basket',
                 items: [
-                    {
+                    ...insertIf(store.getters.isHasPermission(1), {
                         name: 'In House Products',
                         to: '/product/product-list'
-                    },
-                    {
+                    }),
+                    ...insertIf(store.getters.isHasPermission(1), {
                         name: 'Seller Products',
                         to: '/product/seller-product-list'
-                    },
-                    {
+                    }),
+                    ...insertIf(store.getters.isHasPermission(3), {
                         name: 'Brand',
                         to: '/product/brand'
-                    },
-                    {
+                    }),
+                    ...insertIf(store.getters.isHasPermission(4), {
                         name: 'Category',
                         to: '/product/category'
-                    },
-                    {
+                    }),
+                    ...insertIf(store.getters.isHasPermission(5), {
                         name: 'Sub Category',
                         to: '/product/sub-category'
-                    },
-                    {
+                    }),
+                    ...insertIf(store.getters.isHasPermission(6), {
                         name: 'Sub Subcategory',
                         to: '/product/sub-subcategory'
-                    },
-                    {
+                    }),
+                    ...insertIf(store.getters.isHasPermission(7), {
                         name: 'Attribute',
                         to: '/product/attribute'
-                    },
+                    }),
                 ]
             },
             {
@@ -177,3 +179,7 @@ export default [
         ]
     }
 ]
+
+function insertIf(condition, ...elements) { // (A)
+    return condition ? elements : [];
+}

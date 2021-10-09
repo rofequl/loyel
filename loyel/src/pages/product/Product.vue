@@ -37,7 +37,7 @@
               </a-breadcrumb-item>
             </a-breadcrumb>
             <div style="width: 100%" class="my-4">
-              <a-row>
+              <a-row class="bg-white pt-3">
                 <a-col :sm="8">
                   <ProductImage @imageChange="data =>{main_image = showImage(data)}" :thumb="main_image"
                                 :carousel="product.caro_image"/>
@@ -213,12 +213,14 @@
                   </div>
                 </a-col>
               </a-row>
-              <a-row>
+              <a-row class="mt-4">
                 <a-col :sm="4">
 
                 </a-col>
                 <a-col :sm="20">
                   <Detail class="product-details" :product="product"/>
+                  <related-product :product="product.product_list.related_product"/>
+
                 </a-col>
               </a-row>
             </div>
@@ -234,10 +236,11 @@ import {mapGetters} from "vuex";
 import ProductImage from "@/components/product/ProductImage";
 import Quantity from "@/components/product/Quantity";
 import Detail from "@/components/product/Detail";
+import RelatedProduct from "@/components/product/RelatedProduct";
 
 export default {
   name: "Product",
-  components: {ProductImage, Quantity, Detail},
+  components: {RelatedProduct, ProductImage, Quantity, Detail},
   data() {
     return {
       product: '',
@@ -431,7 +434,7 @@ export default {
           }
         }
       } else attribute = false
-      color !== false && attribute !== false ? this.product_variant = variant : this.product_variant = '';
+      color !== false || attribute !== false ? this.product_variant = variant : this.product_variant = '';
     },
     addToCart() {
       if (this.checkToCart('cart')) {
@@ -492,6 +495,7 @@ export default {
         data['variation_value'] = variation;
         data['variation_sku'] = this.variation_sku;
       } else data['variation'] = 0;
+      console.log(data);
       this.$store.dispatch('STORE_CART', data)
     },
     buyNow() {

@@ -8,7 +8,7 @@
         <h3 class="page-title">Product List</h3>
       </div>
       <div class="col-12 col-sm-6 d-flex align-items-center">
-        <div class="mx-auto ml-sm-auto mr-sm-0">
+        <div class="mx-auto ml-sm-auto mr-sm-0" v-if="isHasPermission(2)">
           <CButton @click="$router.push('/product/product-create')" block size="sm" color="info">Add New Product
           </CButton>
         </div>
@@ -107,9 +107,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["productList", "productIndex"]),
+    ...mapGetters(["productList", "productIndex", "isHasPermission"]),
     columns() {
-      return ['serial', 'thumbnail_img', 'name', 'featured', 'published', 'action'];
+      return ['serial', 'thumbnail_img', 'name', ...this.isHasPermission(2) ? ['featured', 'published', 'action'] : []];
     },
     options() {
       return {

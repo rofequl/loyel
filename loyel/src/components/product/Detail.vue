@@ -1,13 +1,21 @@
 <template>
   <div>
     <a-card class="border-top"
-        style="width:100%"
-        :tab-list="tabListNoTitle"
-        :active-tab-key="noTitleKey"
-        @tabChange="key => onTabChange(key, 'noTitleKey')"
+            style="width:100%"
+            :tab-list="tabListNoTitle"
+            :active-tab-key="noTitleKey"
+            @tabChange="key => onTabChange(key, 'noTitleKey')"
     >
       <div v-if="noTitleKey === 'tab1'" class="product-desc-content" v-html="product.description"></div>
-      <p v-else-if="noTitleKey === 'tab2'"></p>
+      <div v-else-if="noTitleKey === 'tab2'">
+        <b-embed v-if="product.video_link !== ''"
+                 type="iframe"
+                 aspect="16by9"
+                 :src="product.video_link"
+                 allowfullscreen
+        ></b-embed>
+        <h4 class="text-center text-muted" v-else>No video has been uploaded</h4>
+      </div>
       <div v-else>
         <h4 class="text-center text-muted">There have been no reviews for this product yet.</h4>
       </div>

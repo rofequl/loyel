@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->boolean('email_verify')->default(0)->comment('0=Unverified, 1=Verify');
             $table->string('mobile')->nullable();
             $table->boolean('mobile_verify')->default(0)->comment('0=Unverified, 1=Verify');
-            $table->integer('permission_id')->nullable();
+            $table->integer('role_id')->nullable();
             $table->string('password')->nullable();
             $table->date('birthday')->nullable();
             $table->string('gender', 10)->nullable();

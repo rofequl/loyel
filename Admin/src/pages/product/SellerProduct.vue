@@ -100,9 +100,9 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["sellerProductList", "sellerProductIndex"]),
+    ...mapGetters(["sellerProductList", "sellerProductIndex", "isHasPermission"]),
     columns() {
-      return ['serial', 'thumbnail_img', 'name', 'featured', 'published', 'action'];
+      return ['serial', 'thumbnail_img', 'name', ...this.isHasPermission(2) ? ['featured', 'published', 'action'] : []];
     },
     options() {
       return {

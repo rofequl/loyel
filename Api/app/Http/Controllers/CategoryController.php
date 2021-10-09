@@ -21,6 +21,58 @@ class CategoryController extends Controller
         return DB::table('categories')->orderByRaw('ISNULL(serial), serial ASC')->get();
     }
 
+    public function sellerCommission(Request $request)
+    {
+        $colect = collect();
+        $category = DB::table('categories')->select('name', 'id')->get();
+        foreach ($category as $categories) {
+            $subcategory = DB::table('sub_categories')->where('category_id', $categories->id)->select('name', 'id')->get();
+            if ($subcategory->count() > 0) {
+                foreach ($subcategory as $subcategories) {
+                    $sub_subcategory = DB::table('sub_sub_categories')->where('category_id', $categories->id)
+                        ->where('subcategory_id', $subcategories->id)->select('name', 'id')->get();
+                    if ($sub_subcategory->count() > 0) {
+                        foreach ($sub_subcategory as $sub_subcategories) {
+                            $colect->push([
+                                'category_id' => $categories->id,
+                                'subcategory_id' => $subcategories->id,
+                                'sub_subcategory_id' => $sub_subcategories->id,
+                                'category_name' => $categories->name,
+                                'subcategory_name' => $subcategories->name,
+                                'sub_subcategory_name' => $sub_subcategories->name,
+                                'position' => 3,
+                                'rate' => 0
+                            ]);
+                        }
+                    } else {
+                        $colect->push([
+                            'category_id' => $categories->id,
+                            'subcategory_id' => $subcategories->id,
+                            'sub_subcategory_id' => NULL,
+                            'category_name' => $categories->name,
+                            'subcategory_name' => $subcategories->name,
+                            'sub_subcategory_name' => NULL,
+                            'position' => 2,
+                            'rate' => 0
+                        ]);
+                    }
+                }
+            } else {
+                $colect->push([
+                    'category_id' => $categories->id,
+                    'subcategory_id' => NULL,
+                    'sub_subcategory_id' => NULL,
+                    'category_name' => $categories->name,
+                    'subcategory_name' => NULL,
+                    'sub_subcategory_name' => NULL,
+                    'position' => 1,
+                    'rate' => 0
+                ]);
+            }
+        }
+        return $colect;
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [

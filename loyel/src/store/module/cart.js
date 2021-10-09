@@ -51,8 +51,10 @@ export default {
                         state.cart_list.splice(index, 1);
                     } else {
                         if (state.cart_list[i].variation_sku === data.variation_sku) {
-                            let index = state.cart_list.findIndex(value => value.variation_sku === data.variation_sku);
-                            state.cart_list.splice(index, 1);
+                            if (JSON.stringify(state.cart_list[i].variation_value) == JSON.stringify(data.variation_value)) {
+                                let index = state.cart_list.findIndex(value => value.variation_sku === data.variation_sku);
+                                state.cart_list.splice(index, 1);
+                            }
                         }
                     }
                 }

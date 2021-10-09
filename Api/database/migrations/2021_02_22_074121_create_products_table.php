@@ -58,6 +58,7 @@ class CreateProductsTable extends Migration
             $table->boolean('featured')->default(0);
             $table->boolean('published')->default(0);
             $table->integer('total_sell')->default(0);
+            $table->bigInteger('total_view')->default(0);
             $table->json('wishlist')->nullable();
 
             $table->foreign('category_id')->references('id')->on('categories');

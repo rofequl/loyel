@@ -51,6 +51,12 @@ function configRoutes() {
                     component: () => import("@/pages/ProductList")
                 },
                 {
+                    meta: {title: 'Product List | Brand'},
+                    path: "/brand/:brand?",
+                    name: "brand",
+                    component: () => import("@/pages/ProductListBrand")
+                },
+                {
                     meta: {title: 'Cart Product'},
                     path: "/cart",
                     name: "cart",

@@ -74,7 +74,13 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
     //  Admin Route
     //------------------------------------------------------------------
     $router->get('admin/profile', 'Auth\AdminController@profile');
+    $router->get('admin/profile', 'Auth\AdminController@profile');
     $router->post('admin/logout', 'Auth\AdminController@logout');
+    $router->get('user-list', 'Auth\AdminController@userList');
+    $router->post('admin-user-entry', 'Auth\AdminController@userStoreAdmin');
+    $router->put('admin-user-entry/{id}', 'Auth\AdminController@userUpdateAdmin');
+    $router->delete('user/{id}', 'Auth\AdminController@destroy');
+    $router->get('admin/update-permission', 'Auth\AdminController@profilePermission');
 
     //Dashboard
     $router->get('dashboard', 'GeneralController@dashboard');
@@ -140,38 +146,38 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
     $router->delete('area/{id}', 'AreaController@destroy');
 
     //product
-    $router->post('category', 'CategoryController@store');
-    $router->post('category-serial', 'CategoryController@serial');
-    $router->put('category/{id}', 'CategoryController@update');
-    $router->delete('category/{id}', 'CategoryController@destroy');
+    $router->post('category', ['middleware' => 'permission:4', 'uses' => 'CategoryController@store']);
+    $router->post('category-serial', ['middleware' => 'permission:4', 'uses' => 'CategoryController@serial']);
+    $router->put('category/{id}', ['middleware' => 'permission:4', 'uses' => 'CategoryController@update']);
+    $router->delete('category/{id}', ['middleware' => 'permission:4', 'uses' => 'CategoryController@destroy']);
 
-    $router->post('subcategory', 'SubcategoryController@store');
-    $router->post('subcategory-serial', 'SubcategoryController@serial');
-    $router->put('subcategory/{id}', 'SubcategoryController@update');
-    $router->delete('subcategory/{id}', 'SubcategoryController@destroy');
+    $router->post('subcategory', ['middleware' => 'permission:5', 'uses' => 'SubcategoryController@store']);
+    $router->post('subcategory-serial', ['middleware' => 'permission:5', 'uses' => 'SubcategoryController@serial']);
+    $router->put('subcategory/{id}', ['middleware' => 'permission:5', 'uses' => 'SubcategoryController@update']);
+    $router->delete('subcategory/{id}', ['middleware' => 'permission:5', 'uses' => 'SubcategoryController@destroy']);
 
-    $router->post('subsubcategory', 'SubSubcategoryController@store');
-    $router->post('subsubcategory-serial', 'SubSubcategoryController@serial');
-    $router->put('subsubcategory/{id}', 'SubSubcategoryController@update');
-    $router->delete('subsubcategory/{id}', 'SubSubcategoryController@destroy');
+    $router->post('subsubcategory', ['middleware' => 'permission:6', 'uses' => 'SubSubcategoryController@store']);
+    $router->post('subsubcategory-serial', ['middleware' => 'permission:6', 'uses' => 'SubSubcategoryController@serial']);
+    $router->put('subsubcategory/{id}', ['middleware' => 'permission:6', 'uses' => 'SubSubcategoryController@update']);
+    $router->delete('subsubcategory/{id}', ['middleware' => 'permission:6', 'uses' => 'SubSubcategoryController@destroy']);
 
-    $router->post('brand', 'BrandController@store');
-    $router->post('brand-serial', 'BrandController@serial');
-    $router->put('brand/{id}', 'BrandController@update');
-    $router->delete('brand/{id}', 'BrandController@destroy');
+    $router->post('brand', ['middleware' => 'permission:3', 'uses' => 'BrandController@store']);
+    $router->post('brand-serial', ['middleware' => 'permission:3', 'uses' => 'BrandController@serial']);
+    $router->put('brand/{id}', ['middleware' => 'permission:3', 'uses' => 'BrandController@update']);
+    $router->delete('brand/{id}', ['middleware' => 'permission:3', 'uses' => 'BrandController@destroy']);
 
-    $router->get('attribute', 'AttributeController@index');
-    $router->post('attribute/{position}/{id}', 'AttributeController@store');
-    $router->post('attribute-update/{position}/{id}', 'AttributeController@storeValue');
-    $router->put('attribute/{id}', 'AttributeController@update');
-    $router->delete('attribute/{id}', 'AttributeController@destroy');
+    $router->get('attribute', ['middleware' => 'permission:7,others', 'uses' => 'AttributeController@index']);
+    $router->post('attribute/{position}/{id}', ['middleware' => 'permission:7', 'uses' => 'AttributeController@store']);
+    $router->post('attribute-update/{position}/{id}', ['middleware' => 'permission:7', 'uses' => 'AttributeController@storeValue']);
+    $router->put('attribute/{id}', ['middleware' => 'permission:7', 'uses' => 'AttributeController@update']);
+    $router->delete('attribute/{id}', ['middleware' => 'permission:7', 'uses' => 'AttributeController@destroy']);
 
-    $router->get('product', 'ProductController@index');
-    $router->get('selling-product', 'ProductController@sellingProduct');
-    $router->post('product', 'ProductController@store');
-    $router->delete('product/{id}', 'ProductController@destroy');
-    $router->post('featured_product_active', 'ProductController@featured');
-    $router->post('published_product_active', 'ProductController@published');
+    $router->get('product', ['middleware' => 'permission:1', 'uses' => 'ProductController@index']);
+    $router->get('selling-product', ['middleware' => 'permission:1', 'uses' => 'ProductController@sellingProduct']);
+    $router->post('product', ['middleware' => 'permission:2,others', 'uses' => 'ProductController@store']);
+    $router->delete('product/{id}', ['middleware' => 'permission:2', 'uses' => 'ProductController@destroy']);
+    $router->post('featured_product_active', ['middleware' => 'permission:2', 'uses' => 'ProductController@featured']);
+    $router->post('published_product_active', ['middleware' => 'permission:2', 'uses' => 'ProductController@published']);
 
     //Marketing
     $router->get('flash-deals', 'FlashDealController@index');
@@ -204,8 +210,10 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
     //Seller
     $router->get('seller-list', 'Auth\CustomerController@sellerList');
     $router->get('seller-details/{code}', 'Auth\CustomerController@sellerDetails');
-
     $router->post('user-verify', 'Auth\AdminController@userVerify');
+
+    $router->get('category-commission', 'CategoryController@sellerCommission');
+
 
     //Sales
     $router->get('order-list', 'OrderController@index');
@@ -222,6 +230,16 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
 
     //Notification
     $router->get('notification', 'NotificationController@index');
+
+    //User Manage | Role, Permission
+    $router->get('role', 'RoleController@index');
+    $router->post('role', 'RoleController@store');
+    $router->put('role/{id}', 'RoleController@update');
+    $router->delete('role/{id}', 'RoleController@destroy');
+
+    $router->get('permission-list', 'RoleController@permissionIndex');
+    $router->post('permission-update', 'RoleController@permissionUpdate');
+
 });
 
 //Setup & Configurations

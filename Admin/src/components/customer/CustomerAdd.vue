@@ -175,5 +175,7 @@ export default {
 </script>
 
 <style scoped>
-
+>>> .ant-modal-mask, >>> .ant-modal-wrap {
+  z-index: 1030 !important;
+}
 </style>

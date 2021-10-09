@@ -38,7 +38,8 @@
             </router-link>
           </div>
           <Search/>
-          <div class="col-12  col-sm-6 col-md-12 col-lg-3 col-xl mt-3 order-4 order-sm-3 order-md-4 order-lg-3 text-center text-sm-left text-md-center">
+          <div
+              class="col-12  col-sm-6 col-md-12 col-lg-3 col-xl mt-3 order-4 order-sm-3 order-md-4 order-lg-3 text-center text-sm-left text-md-center">
             <router-link class="text-primary-color mr-4 d-lg-none" to="/categories">
               All Category
             </router-link>
@@ -49,35 +50,36 @@
               OfferZone
             </router-link>
           </div>
-          <div class="col-7 col-sm-6 col-md-4 col-lg-2 col-xl mt-3 order-2 order-sm-4 order-md-3 order-lg-4 card-wrapper text-right">
+          <div
+              class="col-7 col-sm-6 col-md-4 col-lg-2 col-xl mt-3 order-2 order-sm-4 order-md-3 order-lg-4 card-wrapper text-right">
             <router-link to="/cart">
               <a-badge class="pointer" :count="cartProductCount"
                        :number-style="{ backgroundColor: '#b4f54c', color: 'white'}">
-                <a-avatar :size="31" class="shopping-cart" shape="square" icon="shopping-cart"/>
+                <i class="fa fa-shopping-cart text-primary-color" :style="{fontSize: '30px'}"></i>
               </a-badge>
             </router-link>
             <router-link to="/wishlist">
               <a-badge class="pointer" :count="totalWishlist"
                        :number-style="{ backgroundColor: '#b4f54c', color: 'white'}">
-                <a-avatar :size="31" class="shopping-cart ml-3" shape="square" icon="heart"/>
+                <i class="fa fa-heart ml-3 text-primary-color" :style="{fontSize: '30px'}"></i>
               </a-badge>
             </router-link>
             <router-link to="/notification">
               <a-badge class="pointer" :count="totalNotification"
                        :number-style="{ backgroundColor: '#b4f54c', color: 'white'}">
-                <a-avatar :size="31" class="shopping-cart ml-3" shape="square" icon="bell"/>
+                <i class="fa fa-bell ml-3 text-primary-color" :style="{fontSize: '30px'}"></i>
               </a-badge>
             </router-link>
             <a-dropdown overlayClassName="header-droupdown">
               <router-link v-if="isCustomerOrLogin" to="/profile" class="ant-dropdown-link"
                            @click="e => e.preventDefault()">
                 <a-badge class="pointer">
-                  <a-avatar :size="31" class="shopping-cart ml-2" shape="square" icon="user"/>
+                  <i class="fa fa-user-circle-o ml-2 text-primary-color" :style="{fontSize: '30px'}"></i>
                 </a-badge>
               </router-link>
               <router-link v-else to="/profile" class="ant-dropdown-link ml-2" @click="e => e.preventDefault()">
                 <a-badge class="pointer">
-                  <a-avatar :size="31" class="shopping-cart ml-2" shape="square" icon="user"/>
+                  <i class="fa fa-user-circle-o ml-2 text-primary-color" :style="{fontSize: '30px'}"></i>
                 </a-badge>
               </router-link>
               <a-menu slot="overlay" style="font-size: 12px">
@@ -119,7 +121,41 @@
     <!-- MAIN MENUBAR AREA END-->
 
     <!--        ********************* menu part start *************************-->
-    <CategoryMenu/>
+    <section style="margin-top: 77px" id="categorie">
+      <div class="categorie-menu d-none d-lg-block">
+        <ul class="mb-0">
+          <li>
+            <a-tooltip placement="top" title="All Category">
+              <router-link to="/categories"><i class="fa fa-list-ul text-white bg-primary rounded-circle p-1"></i>
+              </router-link>
+            </a-tooltip>
+          </li>
+          <li v-for="categories in categoryList.slice(0,7)" :key="categories.id"
+              :class="{'mega-menu dropdowns' : subcategoryById(categories.id).length > 0}">
+            <router-link :to="{name: 'category', params:{cat: categories.slug}}">
+              {{ isLangBn ? categories.name_bd : categories.name }}
+            </router-link>
+            <div class="dropdown-content container text-left">
+              <div class="card-columns">
+                <div class="card menu-content shadow-none border-0 bg-transparent pb-md-2 p-2 p-md-4 mb-0 "
+                     v-for="subcategories in subcategoryById(categories.id)"
+                     :key="subcategories.id">
+                  <router-link :to="{name: 'category', params:{cat: categories.slug, sub:subcategories.slug}}"><h6
+                      class="submenu-title cus-mt p-0 pb-2"
+                      style="font-size: 14px;color: blue;">{{ isLangBn ? subcategories.name_bd : subcategories.name }}
+                  </h6></router-link>
+                  <router-link
+                      :to="{name: 'category', params:{cat: categories.slug, sub:subcategories.slug, subcat:subsubcategories.slug}}"
+                      v-for="subsubcategories in subsubcategoryById(subcategories.id)"
+                      :key="subsubcategories.id">{{ isLangBn ? subsubcategories.name_bd : subsubcategories.name }}
+                  </router-link>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
     <!--        ********************* menu part end ***************************-->
   </header>
   <!-- HEADER AREA END -->
@@ -128,11 +164,10 @@
 <script>
 import {mapGetters} from 'vuex';
 import Search from "@/components/layout/Search";
-import CategoryMenu from "@/components/layout/CategoryMenu";
 
 export default {
   name: "Header",
-  components: {CategoryMenu, Search},
+  components: {Search},
   data() {
     return {
       scrolling: true,
@@ -157,7 +192,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["generalSettings", "subcategoryList", "subsubcategoryList", "categoryList", "isBangla", "isCustomerOrLogin",
+    ...mapGetters(["generalSettings", "subcategoryList", "subsubcategoryList", "categoryList", "isBangla", "subcategoryById", "subsubcategoryById", "isCustomerOrLogin",
       "lang", "isLangBn", "cartProductCount", "totalWishlist", "isAuthenticated", "totalNotification", "notificationList"])
   },
 }
@@ -175,6 +210,12 @@ export default {
   transition: .2s;
   padding: 10px 0;
 }
+
+.main-menubar .navbar {
+  box-shadow: 0 3px 11px -5px rgb(0 0 0 / 30%);
+  transition: .2s;
+}
+
 
 .top-nav-link {
   font-size: 12px;
@@ -194,6 +235,22 @@ export default {
 .menu-content a:hover {
   color: #ff0000 !important;
 }
+
+.dropdown-content {
+  overflow: auto;
+  display: none;
+  position: absolute;
+  margin: auto;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 166px;
+  background-color: #f1f1f1fc;
+  min-width: 160px;
+  box-shadow: 1px 2px 6px -2px rgb(0 0 0 / 20%);
+  z-index: 2;
+}
+
 
 .dropdowns:hover .dropdown-content {
   display: block;

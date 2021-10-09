@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Model\User;
 use App\Model\UserVerification;
 use App\Traits\ApiResponse;
+use App\Traits\FileUpload;
 use App\Traits\Slug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
@@ -12,12 +13,14 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AdminController extends Controller
 {
     use ApiResponse;
+    use FileUpload;
     use Slug;
 
     public function register(Request $request): JsonResponse
@@ -70,7 +73,14 @@ class AdminController extends Controller
 
     public function profile(): JsonResponse
     {
-        return response()->json(['user' => Auth::user(), 'notification' => DB::table('notifications')->where('user_type', 'admin')->get()->take(5)]);
+        return response()->json(['user' => Auth::user(),
+            'notification' => DB::table('notifications')->where('user_type', 'admin')->get()->take(5),
+            'permission' => DB::table('role_has_permissions')->where('role_id', Auth::user()->role_id)->get()->pluck('permission_id')]);
+    }
+
+    public function profilePermission()
+    {
+        return DB::table('role_has_permissions')->where('role_id', Auth::user()->role_id)->get()->pluck('permission_id');
     }
 
     public function logout(): JsonResponse
@@ -199,5 +209,102 @@ class AdminController extends Controller
         $user->save();
 
         return User::where('id', $id)->select('id', 'name', 'photo_type', 'photo', 'status')->first();
+    }
+
+    public function userList()
+    {
+        return DB::table('users')->where('user_type', 1)
+            ->join('roles', 'roles.id', '=', 'users.role_id')
+            ->select('roles.name as role', 'users.id', 'users.name', 'users.photo_type', 'users.photo', 'users.status', 'users.email', 'users.role_id')->get();
+    }
+
+    public function userStoreAdmin(Request $request)
+    {
+
+        $this->validate($request, [
+            'name' => 'required|string',
+            'email' => 'required',
+            'password' => 'required',
+            'role_id' => 'required',
+        ]);
+
+        $email = $request->email;
+
+        $check = User::where('email', $email)->first();
+        if ($check) {
+            return $this->errorResponse('This email already used try another');
+        }
+
+        $user = new User();
+        $user->user_type = 1;
+        $user->name = $request->name;
+        $user->email = $email;
+        $user->role_id = $request->role_id;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return (array)DB::table('users')->join('roles', 'roles.id', '=', 'users.role_id')
+            ->select('roles.name as role', 'users.id', 'users.name', 'users.photo_type', 'users.photo', 'users.status', 'users.email', 'users.role_id')
+            ->where('users.id', $user->id)->first();
+    }
+
+    public function userUpdateAdmin(Request $request, $id)
+    {
+
+        $this->validate($request, [
+            'name' => 'required|string',
+            'email' => 'required',
+            'password' => 'required',
+            'role_id' => 'required',
+        ]);
+
+        $email = $request->email;
+
+        $check = User::where('email', $email)->where('id', '!=', $id)->first();
+        if ($check) {
+            return $this->errorResponse('This email already used try another');
+        }
+
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $email;
+        $user->role_id = $request->role_id;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return (array)DB::table('users')->join('roles', 'roles.id', '=', 'users.role_id')
+            ->select('roles.name as role', 'users.id', 'users.name', 'users.photo_type', 'users.photo', 'users.status', 'users.email', 'users.role_id')
+            ->where('users.id', $user->id)->first();
+    }
+
+    public function destroy($id)
+    {
+        DB::table('users')->where('id', $id)->delete();
+    }
+
+    public function profileUpdate(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required|string',
+        ]);
+
+        $photo = Auth::user()->photo;
+        $photo_type = Auth::user()->photo_type;
+        if ($request->photo != '' && strlen($request->photo) > 200) {
+            if ($photo !== 'image/user/user.png' && Auth::user()->photo_type === 0) {
+                File::delete(base_path('public/' . $photo));
+            }
+            $photo = $this->saveImagesWH($request, 'photo', 'upload/user/profile/', 512, 512);
+            $photo_type = 0;
+        }
+
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->gender = $request->gender;
+        $user->birthday = $request->birthday;
+        $user->photo = $photo;
+        $user->photo_type = $photo_type;
+        $user->mobile = $request->mobile;
+        $user->save();
     }
 }

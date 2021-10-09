@@ -1,14 +1,14 @@
 <template>
   <div class="col-12 col-sm-9 col-md-5 col-lg-5 col-xl-5 mt-2 order-3 order-sm-2 ">
     <div class="search-box">
-      <form>
+      <form v-on:submit.prevent="onSubmit">
         <input type="search" ref="input" placeholder="Search" aria-label="Search" @focus="debounceName"
                @keyup="debounceName" v-model="search" class="form-control position-relative">
-        <button type="submit" class="btn-search"><i class="fa fa-search" aria-hidden="true"></i></button>
+        <button type="submit" class="btn-search">Search</button>
       </form>
       <div
-          class="typed-search-box bg-white rounded shadow-lg position-absolute left-0 top-100 w-100"
-          style="min-height: 200px" v-show="suggestion" v-closable="{exclude: ['input'],handler: 'onClose'}">
+          class="typed-search-box bg-white rounded shadow-lg position-absolute top-100 w-100"
+          style="min-height: 200px;z-index: 1" v-show="suggestion" v-closable="{exclude: ['input'],handler: 'onClose'}">
         <div class="search-nothing p-3 text-center fs-16" v-if="Object.keys(suggestion_list).length === 0">Sorry,
           nothing
           found for <strong>"{{ search }}"</strong></div>
@@ -50,7 +50,7 @@
                            alt="">
                     </div>
                     <div class="flex-grow-1 overflow--hidden minw-0">
-                      <div class="product-name text-truncate fs-14 mb-5px text-nowrap">
+                      <div class="product-name fs-14 mb-5px">
                         {{ products.name }}
                       </div>
                       <div class="">
@@ -132,6 +132,9 @@ export default {
     onClose() {
       this.suggestion = false
     },
+    onSubmit(){
+
+    }
   },
   created() {
     this.debounceName = debounce(this.searching, 500)

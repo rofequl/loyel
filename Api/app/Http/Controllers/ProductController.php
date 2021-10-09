@@ -49,10 +49,10 @@ class ProductController extends Controller
 
         $photos = [];
         $attribute = [];
-        $thumbnail = $this->saveImagesWH($request, 'thumbnail_img', 'upload/product/thumbnail/', 450, 500);
+        $thumbnail = $this->saveImagesWH($request, 'thumbnail_img', 'upload/product/thumbnail/', 720, 800);
         if ($request->photos != '') {
             foreach ($request->photos as $photo) {
-                $image = $this->saveImagesDWH($photo, 'upload/product/photos/', 450, 450);
+                $image = $this->saveImagesDWH($photo, 'upload/product/photos/', 720, 720);
                 array_push($photos, $image);
             }
         }
@@ -67,7 +67,7 @@ class ProductController extends Controller
         if ($request->color_image) {
             foreach ($request->color as $photo) {
                 if ($photo['image'] !== '') {
-                    $image = $this->saveImagesDWH($photo['image'], 'upload/product/photos/', 450, 450);
+                    $image = $this->saveImagesDWH($photo['image'], 'upload/product/photos/', 720, 720);
                     $image = [
                         'name' => $photo['name'],
                         'image' => $image,
@@ -231,12 +231,14 @@ class ProductController extends Controller
         $category_id = $request->category;
         $subcategory_id = $request->subcategory;
         $subsubcategory_id = $request->subsubcategory;
+        $brand_id = $request->brand;
 
         $keyword = $request->keyword;
 
         if ($category_id) $conditions = array_merge($conditions, ['category_id' => $category_id]);
         if ($subcategory_id) $conditions = array_merge($conditions, ['subcategory_id' => $subcategory_id]);
         if ($subsubcategory_id) $conditions = array_merge($conditions, ['sub_subcategory_id' => $subsubcategory_id]);
+        if ($brand_id) $conditions = array_merge($conditions, ['brand_id' => $brand_id]);
 
         $product = Product::where($conditions);
 
@@ -340,13 +342,15 @@ class ProductController extends Controller
             if ($product->added_by == 'seller') $seller['seller_id'] = $seller_info->seller_id;
             else $seller['seller_id'] = '';
 
+            $product_list['related_product'] = $this->relatedProduct($product->id);
 
             $result = ['category' => $category, 'subcategory' => $subcategory, 'subsubcategory' => $subsubcategory, 'unit' => $unit,
                 'brand' => $brand, 'position' => $position, 'slug' => $product->slug, 'id' => $product->id, 'name' => $product->name,
                 'main_image' => $product->thumbnail_img, 'caro_image' => json_decode($product->photos), 'condition' => $product->product_type,
                 'weight' => $product->weight, 'dimension' => $product->dimension, 'discount' => $discount, 'price' => $price,
                 'color' => $color, 'attribute' => $attribute, 'description' => $product->description, 'quantity' => $quantity, 'sku' => $product->sku,
-                'wishlist' => $wishlist, 'seller' => $seller];
+                'wishlist' => $wishlist, 'seller' => $seller, 'video_link' => $product->video_link, 'product_list' => $product_list];
+            Product::where('id', $product->id)->update(['total_view' => DB::raw('total_view+1')]);
         } else {
             $result = ['result' => 'Error', 'message' => 'Product not found'];
         }
@@ -423,5 +427,60 @@ class ProductController extends Controller
             return $shop;
         } else return $this->errorResponse('error', '', 422);
 
+    }
+
+    public function relatedProduct($id)
+    {
+        $product = DB::table('products')->where('id', $id)->select('cat_position', 'sub_subcategory_id', 'subcategory_id', 'category_id')->first();
+        $related_product = collect();
+        if ($product->cat_position === 3) {
+            $sub_subcategory_product = DB::table('products')->where('sub_subcategory_id', $product->sub_subcategory_id)
+                ->where('id', '!=', $id)->select('id')->inRandomOrder()->get()->take(10);
+            $subcategory_product = DB::table('products')->where('subcategory_id', $product->subcategory_id)
+                ->where('id', '!=', $id)->whereNotIn('id', $sub_subcategory_product->pluck('id'))
+                ->select('id')->inRandomOrder()->get()->take(10);
+            $category_product = DB::table('products')->where('category_id', $product->category_id)
+                ->where('id', '!=', $id)->whereNotIn('id', $sub_subcategory_product->pluck('id'))->whereNotIn('id', $subcategory_product->pluck('id'))
+                ->select('id')->inRandomOrder()->get()->take(10);
+            if ($sub_subcategory_product->count() > 9) {
+                $related_product = $related_product->merge($sub_subcategory_product);
+            } elseif ($subcategory_product->count() > 9) {
+                $related_product = $related_product->merge($sub_subcategory_product);
+                $related_product = $related_product->merge($subcategory_product);
+            } else {
+                $related_product = $related_product->merge($sub_subcategory_product);
+                $related_product = $related_product->merge($subcategory_product);
+                $related_product = $related_product->merge($category_product);
+            }
+        } elseif ($product->cat_position === 2) {
+            $subcategory_product = DB::table('products')
+                ->where('id', '!=', $id)->where('subcategory_id', $product->subcategory_id)->inRandomOrder()->get()->take(10);
+            $category_product = DB::table('products')->where('category_id', $product->category_id)
+                ->where('id', '!=', $id)->whereNotIn('id', $subcategory_product->pluck('id'))
+                ->select('id')->inRandomOrder()->get()->take(10);
+            if ($subcategory_product->count() > 9) {
+                $related_product = $related_product->merge($subcategory_product);
+            } else {
+                $related_product = $related_product->merge($subcategory_product);
+                $related_product = $related_product->merge($category_product);
+            }
+        } else {
+            $category_product = DB::table('products')->where('category_id', $product->category_id)
+                ->where('id', '!=', $id)->select('id')->inRandomOrder()->get()->take(10);
+            $all_product = DB::table('products')->where('id', '!=', $id)->whereNotIn('id', $category_product->pluck('id'))
+                ->select('id')->inRandomOrder()->get()->take(10);
+            if ($category_product->count() > 9) {
+                $related_product = $related_product->merge($category_product);
+            } else {
+                $related_product = $related_product->merge($category_product);
+                $related_product = $related_product->merge($all_product);
+            }
+        }
+        $product_list = collect();
+        foreach ($related_product as $products) {
+            $product_list->push($this->productInfo($products->id));
+        }
+
+        return $product_list;
     }
 }

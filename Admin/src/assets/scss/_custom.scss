@@ -16,8 +16,8 @@ a {
   transition: color 0.3s ease;
 }
 
-label, p{
-  margin-bottom: 0!important;
+label, p {
+  margin-bottom: 0 !important;
 }
 
 /* width */
@@ -127,4 +127,32 @@ label, p{
   td:focus, th:focus {
     outline: 0 !important;
   }
+}
+
+//antdv core icon error correction
+.correction-class .dropdown-item {
+  display: flex !important;
+
+  svg {
+    margin-right: 6px;
+  }
+}
+
+//Profile page design
+.img-circle img {
+  height: 100px;
+  width: 100px;
+  border-radius: 100%;
+  border: 5px solid #fff;
+}
+
+.nav-pills a.nav-link {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+  border-radius: 0;
+  color: #333;
+}
+
+.nav-pills a.nav-link i {
+  width: 20px;
 }

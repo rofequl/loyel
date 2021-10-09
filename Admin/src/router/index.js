@@ -8,6 +8,7 @@ const isAdminLoggedIn = (to, from, next) => store.getters.isAuthenticated ? next
 
 const isAdminLoggedOut = (to, from, next) => store.getters.isAuthenticated ? next({name: 'login'}) : next()
 
+
 export default new Router({
     mode: 'history',
     linkActiveClass: 'active',
@@ -34,49 +35,57 @@ function configRoutes() {
                     meta: {title: 'Product List'},
                     path: "/product/product-list",
                     name: "product-list",
-                    component: () => import("@/pages/product/Product")
+                    component: () => import("@/pages/product/Product"),
+                    beforeEnter: (to, from, next) => store.getters.isHasPermission(1) ? next() : next({name: 'error-404'})
                 },
                 {
                     meta: {title: 'Seller Products'},
                     path: "/product/seller-product-list",
                     name: "seller-product-list",
-                    component: () => import("@/pages/product/SellerProduct")
+                    component: () => import("@/pages/product/SellerProduct"),
+                    beforeEnter: (to, from, next) => store.getters.isHasPermission(1) ? next() : next({name: 'error-404'})
                 },
                 {
                     meta: {title: 'Product create'},
                     path: "/product/product-create",
                     name: "product-create",
-                    component: () => import("@/pages/product/add/ProductCreate")
+                    component: () => import("@/pages/product/add/ProductCreate"),
+                    beforeEnter: (to, from, next) => store.getters.isHasPermission(2) ? next() : next({name: 'error-404'})
                 },
                 {
                     meta: {title: 'Category Manage'},
                     path: "/product/category",
                     name: "category",
-                    component: () => import("@/pages/product/Category")
+                    component: () => import("@/pages/product/Category"),
+                    beforeEnter: (to, from, next) => store.getters.isHasPermission(4) ? next() : next({name: 'error-404'})
                 },
                 {
                     meta: {title: 'Brand Manage'},
                     path: "/product/brand",
                     name: "brand",
-                    component: () => import("@/pages/product/Brand")
+                    component: () => import("@/pages/product/Brand"),
+                    beforeEnter: (to, from, next) => store.getters.isHasPermission(3) ? next() : next({name: 'error-404'})
                 },
                 {
                     meta: {title: 'Sub-Category Manage'},
                     path: "/product/sub-category",
                     name: "subcategory",
-                    component: () => import("@/pages/product/SubCategory")
+                    component: () => import("@/pages/product/SubCategory"),
+                    beforeEnter: (to, from, next) => store.getters.isHasPermission(5) ? next() : next({name: 'error-404'})
                 },
                 {
                     meta: {title: 'Sub-Subcategory Manage'},
                     path: "/product/sub-subcategory",
                     name: "subsubcategory",
-                    component: () => import("@/pages/product/SubSubCategory")
+                    component: () => import("@/pages/product/SubSubCategory"),
+                    beforeEnter: (to, from, next) => store.getters.isHasPermission(6) ? next() : next({name: 'error-404'})
                 },
                 {
                     meta: {title: 'Product Attribute'},
                     path: "/product/attribute",
                     name: "attribute",
-                    component: () => import("@/pages/product/Attribute")
+                    component: () => import("@/pages/product/Attribute"),
+                    beforeEnter: (to, from, next) => store.getters.isHasPermission(7) ? next() : next({name: 'error-404'})
                 },
                 // Customer
                 {
@@ -259,6 +268,38 @@ function configRoutes() {
                     name: "notification",
                     component: () => import("@/pages/Notification")
                 },
+                // User Manage | Role, Permission
+                {
+                    meta: {title: 'User Management'},
+                    path: "/user-manage",
+                    name: "user-manage",
+                    component: () => import("@/pages/account/UserManage")
+                },
+                {
+                    meta: {title: 'User Profile'},
+                    path: "/user-profile",
+                    name: "user-profile",
+                    component: () => import("@/pages/account/Profile")
+                },
+                {
+                    meta: {title: 'User Profile'},
+                    path: "/user-password",
+                    name: "user-password",
+                    component: () => import("@/pages/account/Profile")
+                },
+                {
+                    meta: {title: 'Role Manage'},
+                    path: "/role",
+                    name: "role",
+                    component: () => import("@/pages/account/Role")
+                },
+                {
+                    meta: {title: 'Role Permission Manage'},
+                    path: "/role-permission",
+                    name: "role-permission",
+                    component: () => import("@/pages/account/Permission")
+                },
+
             ]
         },
         {

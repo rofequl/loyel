@@ -24,7 +24,7 @@
     <CHeaderNav class="d-md-down-none mr-auto">
 
     </CHeaderNav>
-    <CHeaderNav class="mr-4">
+    <CHeaderNav class="mr-4 correction-class">
       <notification/>
       <CDropdown
           inNav
@@ -41,9 +41,21 @@
             </div>
           </CHeaderNavLink>
         </template>
-        <CDropdownItem>
+        <CDropdownItem to="/user-profile">
           <CIcon name="cil-user"/>
           Profile
+        </CDropdownItem>
+        <CDropdownItem to="/user-manage">
+          <CIcon name="cil-group"/>
+          User Management
+        </CDropdownItem>
+        <CDropdownItem to="/role">
+          <CIcon name="cil-list-numbered"/>
+          Role
+        </CDropdownItem>
+        <CDropdownItem to="/role-permission">
+          <CIcon name="cil-shield-alt"/>
+          Role Permission
         </CDropdownItem>
         <CDropdownItem>
           <CIcon name="cil-settings"/>
@@ -51,7 +63,7 @@
         </CDropdownItem>
         <CDropdownDivider/>
         <CDropdownItem @click="$store.dispatch('LOGOUT')">
-          <CIcon name="cil-lock-locked"/>
+          <a-icon type="logout" />
           Logout
         </CDropdownItem>
       </CDropdown>

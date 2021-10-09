@@ -7,6 +7,8 @@ export default {
 
     getters: {
         brandList: state => state.brand,
+        brandNameBySlug: state => slug => state.brand.find(value => value.slug === slug),
+        brandNameById: state => id => state.brand.find(value => value.id === id),
     },
 
     actions: {

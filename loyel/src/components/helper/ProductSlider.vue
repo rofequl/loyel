@@ -48,22 +48,22 @@ export default {
         },
         breakpoints: {
           1500: {
-            slidesPerView: 8,
-          },
-          1200: {
             slidesPerView: 7,
           },
-          1000: {
+          1200: {
             slidesPerView: 6,
           },
-          800: {
+          1000: {
             slidesPerView: 5,
           },
-          600: {
+          800: {
             slidesPerView: 4,
           },
-          500: {
+          600: {
             slidesPerView: 3,
+          },
+          500: {
+            slidesPerView: 2,
           },
           300: {
             slidesPerView: 2,
@@ -104,6 +104,14 @@ export default {
     border: 1px solid #d2caca;
     z-index: 99999;
     top: 30%;
+  }
+
+  .swiper-button-prev, .swiper-container-rtl .swiper-button-next {
+    left: 1px;
+  }
+
+  .swiper-button-next, .swiper-container-rtl .swiper-button-prev {
+    right: 1px;
   }
 
   .swiper-button-prev:hover,
