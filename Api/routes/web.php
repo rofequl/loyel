@@ -240,6 +240,11 @@ $router->group(['middleware' => 'auth:api'], function () use ($router) {
     $router->get('permission-list', 'RoleController@permissionIndex');
     $router->post('permission-update', 'RoleController@permissionUpdate');
 
+    //Reports
+    $router->get('stock-report', 'ReportController@stockReport');
+    $router->get('most-viewed-product', 'ReportController@mostViewed');
+    $router->get('sales-report', 'ReportController@salesReport');
+
 });
 
 //Setup & Configurations

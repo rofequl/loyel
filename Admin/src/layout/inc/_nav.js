@@ -124,6 +124,26 @@ export default [
             },
             {
                 _name: 'CSidebarNavDropdown',
+                name: 'Reports',
+                route: '/report',
+                icon: 'cil-graph',
+                items: [
+                    {
+                        name: 'Stock Report',
+                        to: '/report/stock-report'
+                    },
+                    {
+                        name: 'Sales Report',
+                        to: '/report/sales-report'
+                    },
+                    {
+                        name: 'Most Viewed products',
+                        to: '/report/most-viewed'
+                    },
+                ]
+            },
+            {
+                _name: 'CSidebarNavDropdown',
                 name: 'Shipping',
                 route: '/shipping',
                 icon: 'cil-truck',

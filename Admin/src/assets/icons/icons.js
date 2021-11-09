@@ -95,7 +95,8 @@ import {
     cilMobile,
     cilHeart,
     cilGroup,
-    cilListNumbered
+    cilListNumbered,
+    cilGraph
 
 } from '@coreui/icons'
 import {logo} from './logo'
@@ -164,7 +165,8 @@ export const iconsSet = Object.assign(
         cilMobile,
         cilHeart,
         cilGroup,
-        cilListNumbered
+        cilListNumbered,
+        cilGraph
     },
     {
         cifUs,

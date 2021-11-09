@@ -29,6 +29,7 @@ import rfq from "@/store/module/rfq";
 import staff from "@/store/module/staff";
 import notification from "@/store/module/notification";
 import role from "@/store/module/role";
+import report from "@/store/module/report";
 
 Vue.use(Vuex)
 
@@ -81,7 +82,7 @@ export default new Vuex.Store({
         staff,
         notification,
         role,
-
+        report,
 
     },
     state,

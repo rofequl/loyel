@@ -162,6 +162,25 @@ function configRoutes() {
                     name: "bulk-sms",
                     component: () => import("@/pages/marketing/BulkSMS")
                 },
+                // Reports
+                {
+                    meta: {title: 'Stock Report'},
+                    path: "/report/stock-report",
+                    name: "stock-report",
+                    component: () => import("@/pages/report/StockReport")
+                },
+                {
+                    meta: {title: 'Sales Report'},
+                    path: "/report/sales-report",
+                    name: "sales-report",
+                    component: () => import("@/pages/report/SalesReport")
+                },
+                {
+                    meta: {title: 'Most Viewed products'},
+                    path: "/report/most-viewed",
+                    name: "most-viewed",
+                    component: () => import("@/pages/report/MostViewed")
+                },
                 // Setup & Configurations
                 {
                     meta: {title: 'General Settings'},
